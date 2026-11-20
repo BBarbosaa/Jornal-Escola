@@ -32,7 +32,7 @@ router.get("/perfil", async (req, res) => {
 router.put("/perfil", async (req, res) => {
   const erros = validarAtualizacao(req.body);
   if (erros.length > 0) {
-    res.status(400).json({ erro: erros[0], erros });
+    res.status(400).json({ erro: erros.join("; ") });
     return;
   }
 
@@ -81,7 +81,7 @@ router.delete("/perfil", async (req, res) => {
   const atualizados = jornalistas.filter((j) => j.id !== jornalista.id);
   await gravarJornalistas(atualizados);
 
-  res.json({ mensagem: "Perfil apagado com sucesso." });
+  res.status(204).send();
 });
 
 export default router;

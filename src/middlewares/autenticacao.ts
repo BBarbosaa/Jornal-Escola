@@ -34,7 +34,7 @@ export function autenticar(req: Request, res: Response, next: NextFunction): voi
   }
 
   try {
-    const decoded = jwt.verify(token, secret) as PayloadJwt;
+    const decoded = jwt.verify(token, secret, { algorithms: ["HS256"] }) as PayloadJwt;
 
     if (typeof decoded.id !== "number") {
       res.status(401).json({ erro: "Token inválido." });
