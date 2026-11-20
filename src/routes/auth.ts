@@ -19,7 +19,7 @@ const router = Router();
 router.post("/registo", async (req, res) => {
   const erros = validarRegisto(req.body);
   if (erros.length > 0) {
-    res.status(400).json({ erro: erros[0], erros });
+    res.status(400).json({ erro: erros.join("; ") });
     return;
   }
 
@@ -77,7 +77,7 @@ router.post("/login", async (req, res) => {
   }
 
   const expiresIn = (process.env.JWT_EXPIRA || "1h") as jwt.SignOptions["expiresIn"];
-  const token = jwt.sign({ id: jornalista.id }, secret, { expiresIn });
+  const token = jwt.sign({ id: jornalista.id }, secret, { algorithm: "HS256", expiresIn });
 
   res.json({ token });
 });

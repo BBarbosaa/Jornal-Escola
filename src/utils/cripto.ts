@@ -40,7 +40,7 @@ export function desencriptar(valor: string): string {
   const authTag = Buffer.from(authTagHex, "hex");
   const dados = Buffer.from(dadosHex, "hex");
 
-  const decipher = createDecipheriv(ALGORITMO, chave, iv);
+  const decipher = createDecipheriv(ALGORITMO, chave, iv, { authTagLength: 16 });
   decipher.setAuthTag(authTag);
 
   const desencriptado = Buffer.concat([decipher.update(dados), decipher.final()]);
