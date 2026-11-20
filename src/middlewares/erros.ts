@@ -1,14 +1,23 @@
 import type { Request, Response, NextFunction } from "express";
 
-export function rotaNaoEncontrada(req: Request, res: Response) {
-  res.status(404).json({ erro: "Rota não encontrada" });
+export function rotaNaoEncontrada(req: Request, res: Response): void {
+  res.status(404).json({ erro: `A rota ${req.method} ${req.originalUrl} não existe.` });
 }
 
-export function tratarErros(err: Error, req: Request, res: Response, next: NextFunction) {
-  if (err instanceof SyntaxError) {
-    res.status(400).json({ erro: "JSON inválido no corpo do pedido" });
+function eErroDeJson(erro: unknown): boolean {
+  return typeof erro === "object" && erro !== null &&
+    "type" in erro && erro.type === "entity.parse.failed";
+}
+
+export function tratarErros(erro: unknown, req: Request, res: Response, next: NextFunction): void {
+  if (res.headersSent) {
+    next(erro);
     return;
   }
-  console.error(err);
-  res.status(500).json({ erro: "Erro interno do servidor" });
+  if (eErroDeJson(erro)) {
+    res.status(400).json({ erro: "O corpo do pedido não é JSON válido." });
+    return;
+  }
+  console.error(`Erro em ${req.method} ${req.originalUrl}:`, erro);
+  res.status(500).json({ erro: "Erro interno do servidor." });
 }

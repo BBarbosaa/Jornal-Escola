@@ -10,6 +10,11 @@ const app = express();
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  res.setHeader("Strict-Transport-Security", "max-age=31536000");
+  next();
+});
+
 app.get("/api/v1", (req, res) => {
   res.json({ mensagem: "API Fonte Segura" });
 });
