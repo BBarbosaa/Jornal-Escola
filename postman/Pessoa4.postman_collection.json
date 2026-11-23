@@ -1,0 +1,1530 @@
+{
+  "info": {
+    "name": "Pessoa 4 — Fontes, Arquivo.pt e testes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Executar por ordem com o simulador scripts/arquivo-mock.mjs e ARQUIVO_URL local. Não executar estes cenários simulados contra o Arquivo.pt real."
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.test('Contrato JSON ou 204 vazio', () => { if (pm.response.code === 204) { pm.expect(pm.response.text()).to.eql(''); } else { pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'); const dados = pm.response.json(); if (pm.response.code >= 400) pm.expect(dados.erro).to.be.a('string').and.not.empty; } });"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "01 Registar jornalista",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/registo",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nome\":\"Pessoa Quatro\",\"email\":\"{{emailTeste}}\",\"password\":\"Teste123!\",\"telefone\":\"912345678\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.environment.set('emailTeste', 'pessoa4-' + pm.variables.replaceIn('{{$guid}}') + '@exemplo.pt');",
+              "pm.environment.unset('token');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "pm.environment.set('jornalistaId', pm.response.json().id);",
+              "pm.test('Sem password na resposta', () => pm.expect(pm.response.json()).not.to.have.property('password'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Login e guardar token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{emailTeste}}\",\"password\":\"Teste123!\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Token recebido', () => pm.expect(pm.response.json().token).to.be.a('string').and.not.empty);",
+              "pm.environment.set('token', pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 Login incorreto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{emailTeste}}\",\"password\":\"Errada123!\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 Criar artigo rascunho",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"titulo\":\"Artigo de teste\",\"texto\":\"Texto com fontes verificadas.\",\"estado\":\"rascunho\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "pm.environment.set('artigoId', pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 Criar segundo artigo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"titulo\":\"Outro artigo\",\"texto\":\"Teste da associação entre fonte e artigo.\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "pm.environment.set('outroArtigoId', pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 Fontes sem autenticação",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 Token inválido",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "token-invalido",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 Artigo inexistente",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/9007199254740991/fontes"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 Id inválido",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/abc/fontes"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 Listar fontes vazias",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Lista vazia', () => pm.expect(pm.response.json()).to.eql([]));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11 URL inválido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"isto nao e um url\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12 Protocolo inválido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"file:///etc/passwd\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "13 Campos controlados pelo servidor",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/com-arquivo\",\"arquivada\":true}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "14 JSON malformado",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "15 Criar fonte arquivada",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/com-arquivo\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "pm.environment.set('fonteId', pm.response.json().id);",
+              "pm.test('Link e data da versão', () => { const f = pm.response.json(); pm.expect(f.arquivada).to.eql(true); pm.expect(f.dataArquivo).to.eql('2026-01-02T12:34:56.000Z'); pm.expect(f.linkArquivo).to.eql('https://arquivo.pt/wayback/20260102123456/https://exemplo.pt/com-arquivo'); });",
+              "pm.test('Location da fonte', () => pm.expect(pm.response.headers.get('Location')).to.eql('/api/v1/artigos/' + pm.environment.get('artigoId') + '/fontes/' + pm.response.json().id));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "16 Ler fonte",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Fonte correta', () => pm.expect(pm.response.json().id).to.eql(Number(pm.environment.get('fonteId'))));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "17 Fonte noutro artigo",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{outroArtigoId}}/fontes/{{fonteId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "18 Criar fonte não arquivada",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/sem-arquivo\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "pm.environment.set('fonteSemArquivoId', pm.response.json().id);",
+              "pm.test('Sem metadados', () => { const f = pm.response.json(); pm.expect(f.arquivada).to.eql(false); pm.expect(f.linkArquivo).to.eql(null); pm.expect(f.dataArquivo).to.eql(null); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "19 PUT muda URL e limpa metadados",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/sem-arquivo\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Metadados atualizados', () => { const f = pm.response.json(); pm.expect(f.arquivada).to.eql(false); pm.expect(f.linkArquivo).to.eql(null); pm.expect(f.dataArquivo).to.eql(null); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "20 PATCH volta a versão arquivada",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/com-arquivo\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Arquivada novamente', () => pm.expect(pm.response.json().arquivada).to.eql(true));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "21 PUT repetido",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/com-arquivo\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "22 PATCH vazio",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "23 Alterar fonte inexistente",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/9007199254740991",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/com-arquivo\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "24 Falha externa ao criar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/falha\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 502', () => pm.response.to.have.status(502));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "25 Timeout ao criar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/timeout\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 502', () => pm.response.to.have.status(502));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "26 JSON externo inválido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/json-invalido\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 502', () => pm.response.to.have.status(502));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "27 Formato externo inválido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/formato-invalido\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 502', () => pm.response.to.have.status(502));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "28 Data externa inválida",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/data-invalida\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 502', () => pm.response.to.have.status(502));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "29 Falha externa ao alterar",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/falha\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 502', () => pm.response.to.have.status(502));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "30 Fonte intacta após 502",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('URL preservado', () => pm.expect(pm.response.json().url).to.eql('https://exemplo.pt/com-arquivo'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "31 API continua e não criou fontes nos 502",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Só duas fontes', () => pm.expect(pm.response.json()).to.have.lengthOf(2));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "32 Registar segundo jornalista",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/registo",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nome\":\"Outro Jornalista\",\"email\":\"{{emailOutro}}\",\"password\":\"Teste123!\",\"telefone\":\"913456789\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.environment.set('emailOutro', 'outro-' + pm.variables.replaceIn('{{$guid}}') + '@exemplo.pt');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "33 Login segundo jornalista",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{emailOutro}}\",\"password\":\"Teste123!\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.environment.set('tokenOutro', pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "34 Autorização GET: outro jornalista",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{tokenOutro}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "34 Autorização POST: outro jornalista",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{tokenOutro}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/com-arquivo\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "34 Autorização PUT: outro jornalista",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{tokenOutro}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"url\":\"https://exemplo.pt/sem-arquivo\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "34 Autorização DELETE: outro jornalista",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{tokenOutro}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "35 Estatísticas sem chave",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/estatisticas",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "36 Estatísticas com chave",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/estatisticas",
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "key",
+              "value": "x-api-key"
+            },
+            {
+              "key": "value",
+              "value": "{{apiKey}}"
+            },
+            {
+              "key": "in",
+              "value": "header"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Contagens de fontes', () => { const f = pm.response.json().fontes; pm.expect(f.total).to.eql(f.arquivadas + f.naoArquivadas); pm.expect(f.arquivadas).to.be.at.least(1); pm.expect(f.naoArquivadas).to.be.at.least(1); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "37 Publicar artigo",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"estado\":\"publicado\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "38 Publicado não se apaga",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 409', () => pm.response.to.have.status(409));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "39 Apagar fonte",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "40 Fonte já apagada",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "41 Apagar fonte novamente",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes/{{fonteId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "42 Voltar a rascunho para limpeza",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"estado\":\"rascunho\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "43 Apagar artigo e fonte restante em cascata",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "44 Artigo apagado",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{artigoId}}/fontes"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "45 Apagar segundo artigo",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/artigos/{{outroArtigoId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "46 Limpar segundo jornalista",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/jornalistas/perfil",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{tokenOutro}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "47 Limpar jornalista principal",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/jornalistas/perfil"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "48 Rota inexistente",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/rota-inexistente",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

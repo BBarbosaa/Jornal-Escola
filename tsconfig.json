@@ -1,13 +1,23 @@
 {
+  // Configuração do verificador TypeScript. Este ficheiro aceita comentários (JSONC).
   "compilerOptions": {
+    // Usa como referência as funcionalidades JavaScript mais recentes suportadas pelo compilador.
     "target": "ESNext",
+    // Segue as regras de módulos do Node, em conjunto com "type": "module" no package.json.
     "module": "nodenext",
+    // Ativa verificações rigorosas, incluindo tratamento de null/undefined e tipos implícitos.
     "strict": true,
+    // Só verifica os tipos; não gera ficheiros JavaScript. O Node executa os .ts diretamente.
     "noEmit": true,
+    // Permite caminhos de importação que terminam em .ts, como os usados neste projeto.
     "allowImportingTsExtensions": true,
+    // Mantém a distinção explícita entre imports de valores e imports apenas de tipos.
     "verbatimModuleSyntax": true,
+    // Restringe a sintaxe TypeScript à que pode ser removida sem gerar lógica JavaScript adicional.
     "erasableSyntaxOnly": true,
+    // Dispensa verificar internamente os ficheiros de declaração das dependências.
     "skipLibCheck": true
   },
+  // Limita a verificação aos ficheiros de código dentro de src.
   "include": ["src"]
 }

@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node --env-file=.env src/servidor.ts",
     "dev": "node --env-file=.env --watch src/servidor.ts",
-    "verificar": "tsc"
+    "verificar": "tsc",
+    "mock:arquivo": "node scripts/arquivo-mock.mjs",
+    "test": "node scripts/testar-postman.mjs"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +23,7 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.6.6",
+    "newman": "^6.2.3",
     "typescript": "^7.0.2"
   }
 }
