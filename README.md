@@ -17,7 +17,7 @@ npm install
 
 ## Configurar
 
-O ficheiro .env já vem no zip. Para criar um novo, copiar o .env.exemplo para .env e preencher os segredos. Para gerar cada segredo:
+Copiar o .env.exemplo para .env, se ainda não existir, e preencher os segredos. Para gerar cada segredo:
 
 ```
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
@@ -25,9 +25,10 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ## Certificado HTTPS
 
-A chave e o certificado de teste estão na pasta certs. Para gerar novos:
+Se a chave e o certificado de teste ainda não existirem, criar a pasta certs e gerar:
 
 ```
+mkdir certs
 openssl req -x509 -newkey rsa:2048 -nodes -keyout certs/key.pem -out certs/cert.pem -days 365 -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
 ```
 
@@ -57,4 +58,10 @@ npm run verificar
 
 ## Testes
 
-Importar a coleção do Postman que está na pasta do projeto e correr no Runner.
+```powershell
+npm.cmd test
+```
+
+Executa a coleção Postman duas vezes com Newman, um simulador do Arquivo.pt e ficheiros de dados temporários. Não altera os dados do grupo. Este comando testa a aplicação por HTTP local; o servidor normal continua a usar HTTPS.
+
+Para executar no Postman Runner, importar os ficheiros da pasta `postman/` e seguir o [guia da pessoa 4](docs/PESSOA4.md). Os cenários de falha da coleção exigem o simulador local. O guia contém a configuração HTTPS, os exemplos e a demonstração com o Arquivo.pt real.
