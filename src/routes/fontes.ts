@@ -7,13 +7,11 @@ import { eFonteValida } from "../utils/validarFonte.ts";
 import { consultarArquivo } from "../services/arquivo.ts";
 import type { Artigo, Fonte } from "../tipos.ts";
 
-// mergeParams disponibiliza neste router os parâmetros do router pai, como artigoId.
-// Por defeito, os parâmetros do pai não são preservados num router filho.
+// mergeParams permite ler :artigoId do router pai
 const router = Router({ mergeParams: true });
 
 router.use(autenticar);
 
-// O JWT é obrigatório também para listar fontes. Primeiro verifica-se o artigo pai.
 router.use(async (req, res, next) => {
   const id = req.params.artigoId;
   if (typeof id !== "string" || !/^[1-9]\d*$/.test(id) || !Number.isSafeInteger(Number(id))) {
@@ -51,7 +49,7 @@ router.post("/", async (req, res) => {
     res.status(502).json({ erro: resultado.erro });
     return;
   }
-  // Só lemos e gravamos depois da consulta: uma falha externa não cria uma fonte.
+  // Só grava depois da consulta: uma falha externa não cria a fonte
   const fontes = await lerDados<Fonte>("fontes.json");
   const fonte: Fonte = {
     id: fontes.reduce((maior, f) => Math.max(maior, f.id), 0) + 1,
@@ -76,7 +74,7 @@ router.get("/:id", async (req, res) => {
   res.json(fonte);
 });
 
-// Como a fonte só tem um campo editável, PUT e PATCH exigem ambos { url }.
+// Como a fonte só tem um campo editável, PUT e PATCH exigem ambos { url }
 router.route("/:id").put(alterarFonte).patch(alterarFonte);
 
 async function alterarFonte(req: Request, res: Response): Promise<void> {
@@ -94,7 +92,6 @@ async function alterarFonte(req: Request, res: Response): Promise<void> {
     return;
   }
   const url = corpo.url.trim();
-  // Repetir um PUT com o mesmo URL mantém a representação guardada.
   if (url === fonte.url) {
     res.json(fonte);
     return;
@@ -104,7 +101,6 @@ async function alterarFonte(req: Request, res: Response): Promise<void> {
     res.status(502).json({ erro: resultado.erro });
     return;
   }
-  // Relê após a chamada externa para evitar gravar uma cópia antiga de outras fontes.
   const atuais = await lerDados<Fonte>("fontes.json");
   const atual = atuais.find((f) => f.id === id && f.artigoId === artigoId);
   if (!atual) {
