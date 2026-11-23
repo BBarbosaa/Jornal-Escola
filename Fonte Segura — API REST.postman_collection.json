@@ -1,0 +1,5086 @@
+{
+  "info": {
+    "_postman_id": "d3c589a2-a747-4b04-a7e9-46ea0f2faa4a",
+    "name": "Fonte Segura — API REST",
+    "description": "Coleção Postman com testes automatizados para o projeto Fonte Segura (UC00614). Para HTTPS com o certificado autoassinado: Settings › Certificates › CA certificates › ligar e escolher certs/cert.pem.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58412428",
+    "_collection_link": "https://go.postman.co/collection/58412428-d3c589a2-a747-4b04-a7e9-46ea0f2faa4a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "1. Base e 404",
+      "item": [
+        {
+          "name": "GET /api/v1 — Saúde da API (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Resposta tem mensagem', () => {",
+                  "  pm.expect(pm.response.json()).to.have.property('mensagem');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /api/v1 — Saúde da API (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "31"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1f-DfrygjHbfQ8pKqJMEJlK+VxVsH0\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:50:55 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"mensagem\": \"API Fonte Segura\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "GET /api/v1/rota-inexistente — Rota não encontrada (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 404 Not Found', () => {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/rota-inexistente",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rota-inexistente"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /api/v1/rota-inexistente — Rota não encontrada (404)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/rota-inexistente",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "rota-inexistente"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "59"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"3b-Vkv0G2k+GlQFq/mcVJOfKPdmPAY\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:51:02 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"A rota GET /api/v1/rota-inexistente não existe.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Autenticação",
+      "item": [
+        {
+          "name": "POST /auth/registo — Dados inválidos (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 400 Bad Request', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"A\",\n  \"email\": \"invalido\",\n  \"password\": \"123\",\n  \"telefone\": \"abc\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/registo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "registo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /auth/registo — Dados inválidos (400)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"A\",\n  \"email\": \"invalido\",\n  \"password\": \"123\",\n  \"telefone\": \"abc\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/registo",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "registo"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "196"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"c4-Wb7C3j+6NBzLsbOUMbnnS6oS6/g\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:51:38 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"O nome deve ter pelo menos 3 caracteres.; O email é inválido.; A senha deve ter pelo menos 6 caracteres.; O telefone é inválido. Deve conter apenas números e pode começar com '+'.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/registo — Criar jornalista (201)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const agora = Date.now();",
+                  "pm.collectionVariables.set('emailTeste', `jornalista_${agora}@escola.pt`);",
+                  "pm.collectionVariables.set('emailTeste2', `outro_${agora}@escola.pt`);"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 201 Created', () => {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('Devolve perfil sem password e com telefone legível', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo).to.have.property('id');",
+                  "  pm.expect(corpo).to.not.have.property('password');",
+                  "  pm.expect(corpo.telefone).to.eql('912345678');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Ana Silva\",\n  \"email\": \"{{emailTeste}}\",\n  \"password\": \"{{passwordTeste}}\",\n  \"telefone\": \"912345678\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/registo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "registo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /auth/registo — Criar jornalista (201)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Ana Silva\",\n  \"email\": \"{{emailTeste}}\",\n  \"password\": \"{{passwordTeste}}\",\n  \"telefone\": \"912345678\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/registo",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "registo"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "95"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"5f-+ubjc5QhLzkSWqBgUFeZ1Au0IPk\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:51:56 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Ana Silva\",\n  \"email\": \"jornalista_1795463516355@escola.pt\",\n  \"telefone\": \"912345678\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/registo — Email duplicado (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 409 Conflict', () => {",
+                  "  pm.response.to.have.status(409);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Ana Silva\",\n  \"email\": \"{{emailTeste}}\",\n  \"password\": \"{{passwordTeste}}\",\n  \"telefone\": \"912345678\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/registo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "registo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /auth/registo — Email duplicado (409)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Ana Silva\",\n  \"email\": \"{{emailTeste}}\",\n  \"password\": \"{{passwordTeste}}\",\n  \"telefone\": \"912345678\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/registo",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "registo"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "61"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"3d-d0k7NfTX404c4oIMK6YS4WXjPSQ\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:52:03 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Já existe um jornalista registado com este email.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/login — Password errada (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 401 Unauthorized', () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{emailTeste}}\",\n  \"password\": \"Errada@999\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /auth/login — Password errada (401)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{emailTeste}}\",\n  \"password\": \"Errada@999\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "34"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"22-uzgFRlaEr2E89K8tACBdBpWXamg\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:52:12 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Credenciais inválidas.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/login — Login válido e guarda token (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Devolve token JWT e guarda na variável token', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo.token).to.be.a('string').and.not.empty;",
+                  "  pm.collectionVariables.set('token', corpo.token);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{emailTeste}}\",\n  \"password\": \"{{passwordTeste}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /auth/login — Login válido e guarda token (200)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{emailTeste}}\",\n  \"password\": \"{{passwordTeste}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "149"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"95-XpBOK2XUYpAHq3BiwfIxsna5qos\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:52:22 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"token\": \"{{json_web_token_01xx}}\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Jornalistas (Perfil)",
+      "item": [
+        {
+          "name": "GET /jornalistas/perfil — Sem token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 401 Unauthorized sem token', () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jornalistas/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jornalistas",
+                "perfil"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /jornalistas/perfil — Sem token (401)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/jornalistas/perfil",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "jornalistas",
+                    "perfil"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "50"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"32-OoEiqX7qh+2xV/T5sDnCN9X1hXM\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:52:33 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Token de autenticação não fornecido.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "GET /jornalistas/perfil — Ver próprio perfil (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Devolve dados sem password e telefone desencriptado', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo).to.not.have.property('password');",
+                  "  pm.expect(corpo.telefone).to.eql('912345678');",
+                  "  pm.expect(corpo.email).to.eql(pm.collectionVariables.get('emailTeste'));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jornalistas/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jornalistas",
+                "perfil"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /jornalistas/perfil — Ver próprio perfil (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/jornalistas/perfil",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "jornalistas",
+                    "perfil"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "95"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"5f-+ubjc5QhLzkSWqBgUFeZ1Au0IPk\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:52:40 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Ana Silva\",\n  \"email\": \"jornalista_1795463516355@escola.pt\",\n  \"telefone\": \"912345678\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "PUT /jornalistas/perfil — Dados inválidos (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 400 Bad Request', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefone\": \"123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/jornalistas/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jornalistas",
+                "perfil"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "PUT /jornalistas/perfil — Dados inválidos (400)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"telefone\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/jornalistas/perfil",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "jornalistas",
+                    "perfil"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "88"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"58-BrkZZnrkSxqnSIh5a3w7vE+V5wE\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:52:49 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"O telefone é inválido. Deve conter apenas números e pode começar com '+'.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "PUT /jornalistas/perfil — Atualizar perfil (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Nome e telefone atualizados, sem password', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo.nome).to.eql('Ana Costa');",
+                  "  pm.expect(corpo.telefone).to.eql('934567890');",
+                  "  pm.expect(corpo).to.not.have.property('password');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Ana Costa\",\n  \"telefone\": \"934567890\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/jornalistas/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jornalistas",
+                "perfil"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "PUT /jornalistas/perfil — Atualizar perfil (200)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Ana Costa\",\n  \"telefone\": \"934567890\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/jornalistas/perfil",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "jornalistas",
+                    "perfil"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "95"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"5f-IdBR2595sFFbYZgM73bH3IMEypU\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:53:02 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Ana Costa\",\n  \"email\": \"jornalista_1795463516355@escola.pt\",\n  \"telefone\": \"934567890\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Artigos",
+      "item": [
+        {
+          "name": "POST /artigos — Sem token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 401 Unauthorized', () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Sem auth\",\n  \"texto\": \"Corpo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /artigos — Sem token (401)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Sem auth\",\n  \"texto\": \"Corpo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "50"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"32-OoEiqX7qh+2xV/T5sDnCN9X1hXM\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:53:22 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Token de autenticação não fornecido.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /artigos — JSON mal formado (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 400 Bad Request para JSON mal formado', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Mensagem explica que o JSON é inválido', () => {",
+                  "  pm.expect(pm.response.json().erro).to.include('JSON válido');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"titulo\": \"X\", }"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /artigos — JSON mal formado (400)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"titulo\": \"X\", }",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "50"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"32-mYeJl7dS7dsUeolbJMFJXR/CkxQ\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:53:30 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"O corpo do pedido não é JSON válido.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /artigos — Dados inválidos (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 400 Bad Request', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"\",\n  \"texto\": \"\",\n  \"estado\": \"arquivado\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /artigos — Dados inválidos (400)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"\",\n  \"texto\": \"\",\n  \"estado\": \"arquivado\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "132"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"84-12djY9noBADCwNM5/YZvTybqe5Y\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:53:39 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Corpo inválido. Verifica: titulo (texto, não vazio); texto (texto, não vazio); estado (\\\"rascunho\\\" ou \\\"publicado\\\").\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /artigos — Criar rascunho (201 + Location)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 201 Created com header Location', () => {",
+                  "  pm.response.to.have.status(201);",
+                  "  pm.response.to.have.header('Location');",
+                  "});",
+                  "pm.test('Artigo criado como rascunho e guarda ID', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo).to.have.property('id');",
+                  "  pm.expect(corpo.estado).to.eql('rascunho');",
+                  "  pm.expect(pm.response.headers.get('Location')).to.eql(`/api/v1/artigos/${corpo.id}`);",
+                  "  pm.collectionVariables.set('artigoRascunhoId', corpo.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Feira de Ciências da Escola\",\n  \"texto\": \"Os alunos apresentaram vários projetos de robótica.\",\n  \"estado\": \"rascunho\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /artigos — Criar rascunho (201 + Location)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Feira de Ciências da Escola\",\n  \"texto\": \"Os alunos apresentaram vários projetos de robótica.\",\n  \"estado\": \"rascunho\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Location",
+                  "value": "/api/v1/artigos/1"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "149"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"95-x7Vx7taDAxtEVjAj2ABPT5E84GM\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:53:58 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"titulo\": \"Feira de Ciências da Escola\",\n  \"texto\": \"Os alunos apresentaram vários projetos de robótica.\",\n  \"estado\": \"rascunho\",\n  \"jornalistaId\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /artigos — Criar publicado (201 + Location)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 201 Created com header Location', () => {",
+                  "  pm.response.to.have.status(201);",
+                  "  pm.response.to.have.header('Location');",
+                  "});",
+                  "pm.test('Artigo criado como publicado e guarda ID', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo).to.have.property('id');",
+                  "  pm.expect(corpo.estado).to.eql('publicado');",
+                  "  pm.collectionVariables.set('artigoPublicadoId', corpo.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Notícia Publicada de Teste\",\n  \"texto\": \"Este artigo está publicado e não pode ser apagado.\",\n  \"estado\": \"publicado\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /artigos — Criar publicado (201 + Location)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Notícia Publicada de Teste\",\n  \"texto\": \"Este artigo está publicado e não pode ser apagado.\",\n  \"estado\": \"publicado\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Location",
+                  "value": "/api/v1/artigos/2"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "148"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"94-6tq3gRUEDav5hGpP7C9L26/Bk/4\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:54:18 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 2,\n  \"titulo\": \"Notícia Publicada de Teste\",\n  \"texto\": \"Este artigo está publicado e não pode ser apagado.\",\n  \"estado\": \"publicado\",\n  \"jornalistaId\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "GET /artigos — Listar com filtro e paginação (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Devolve paginação e apenas artigos publicados', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo).to.have.property('total');",
+                  "  pm.expect(corpo.pagina).to.eql(1);",
+                  "  pm.expect(corpo.limite).to.eql(5);",
+                  "  pm.expect(corpo.artigos).to.be.an('array').and.not.empty;",
+                  "  corpo.artigos.forEach((a) => pm.expect(a.estado).to.eql('publicado'));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos?estado=publicado&pagina=1&limite=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos"
+              ],
+              "query": [
+                {
+                  "key": "estado",
+                  "value": "publicado"
+                },
+                {
+                  "key": "pagina",
+                  "value": "1"
+                },
+                {
+                  "key": "limite",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /artigos — Listar com filtro e paginação (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos?estado=publicado&pagina=1&limite=5",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos"
+                  ],
+                  "query": [
+                    {
+                      "key": "estado",
+                      "value": "publicado"
+                    },
+                    {
+                      "key": "pagina",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limite",
+                      "value": "5"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "194"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"c2-HTx8dJFC6GYrnNVFfQbY5PQtQ2k\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:54:28 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"total\": 1,\n  \"pagina\": 1,\n  \"limite\": 5,\n  \"artigos\": [\n    {\n      \"id\": 2,\n      \"titulo\": \"Notícia Publicada de Teste\",\n      \"texto\": \"Este artigo está publicado e não pode ser apagado.\",\n      \"estado\": \"publicado\",\n      \"jornalistaId\": 1\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "GET /artigos/abc — ID inválido (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 400 Bad Request para ID não numérico', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/abc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "abc"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /artigos/abc — ID inválido (400)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/abc",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "abc"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "77"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"4d-69vUv/OJhrfXdsaPiQeZyWFnv1E\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:54:43 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"O id «abc» não é válido (usa um número inteiro maior que 0).\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "GET /artigos/:id — Ver artigo por ID (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('ID corresponde ao artigo criado', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo.id).to.eql(Number(pm.collectionVariables.get('artigoRascunhoId')));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoRascunhoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoRascunhoId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /artigos/:id — Ver artigo por ID (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoRascunhoId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoRascunhoId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "148"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"94-RT6/omd0y+2ZaYA7bQsDBaKWIWM\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:59:35 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 3,\n  \"titulo\": \"Notícia Publicada de Teste\",\n  \"texto\": \"Este artigo está publicado e não pode ser apagado.\",\n  \"estado\": \"publicado\",\n  \"jornalistaId\": 2\n}"
+            }
+          ]
+        },
+        {
+          "name": "GET /artigos/999999 — Artigo inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 404 Not Found', () => {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "999999"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /artigos/999999 — Artigo inexistente (404)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/999999",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "999999"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "53"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"35-vaTr+9zy5g5KeCm+ptWtVJATDIg\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 19:59:58 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Não existe nenhum artigo com o id 999999.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "PUT /artigos/:id — Atualizar artigo completo (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Título atualizado', () => {",
+                  "  pm.expect(pm.response.json().titulo).to.eql('Feira de Ciências Atualizada');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Feira de Ciências Atualizada\",\n  \"texto\": \"Texto revisto do artigo.\",\n  \"estado\": \"rascunho\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoRascunhoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoRascunhoId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "PUT /artigos/:id — Atualizar artigo completo (200)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Feira de Ciências Atualizada\",\n  \"texto\": \"Texto revisto do artigo.\",\n  \"estado\": \"rascunho\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoRascunhoId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoRascunhoId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "121"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"79-ZtjF7nvlU3TkL5WblYk95awccxE\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:00:16 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 3,\n  \"titulo\": \"Feira de Ciências Atualizada\",\n  \"texto\": \"Texto revisto do artigo.\",\n  \"estado\": \"rascunho\",\n  \"jornalistaId\": 2\n}"
+            },
+            {
+              "name": "PUT /artigos/:id — Atualizar artigo completo (200)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Feira de Ciências Atualizada\",\n  \"texto\": \"Texto revisto do artigo.\",\n  \"estado\": \"rascunho\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoRascunhoId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoRascunhoId}}"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "55"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"37-bDB6uVCaeMiVPFS6pPcMxUgddiY\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:01:27 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Só podes alterar os teus próprios artigos.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "PATCH /artigos/:id — Alterar parcialmente (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Texto alterado parcialmente', () => {",
+                  "  pm.expect(pm.response.json().texto).to.eql('Texto atualizado via PATCH.');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"texto\": \"Texto atualizado via PATCH.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoRascunhoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoRascunhoId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "PATCH /artigos/:id — Alterar parcialmente (200)",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"texto\": \"Texto atualizado via PATCH.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoRascunhoId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoRascunhoId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "124"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"7c-RsUVs9xQ9QQiyCPyBrnTBGjvf8o\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:02:21 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 3,\n  \"titulo\": \"Feira de Ciências Atualizada\",\n  \"texto\": \"Texto atualizado via PATCH.\",\n  \"estado\": \"rascunho\",\n  \"jornalistaId\": 2\n}"
+            }
+          ]
+        },
+        {
+          "name": "DELETE /artigos/:id — Regra de negócio: publicado não se apaga (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 409 Conflict ao tentar apagar artigo publicado', () => {",
+                  "  pm.response.to.have.status(409);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "DELETE /artigos/:id — Regra de negócio: publicado não se apaga (409)",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "54"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"36-R6orke3mOBBeL4+IFTpIGB7/5mw\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:02:40 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Só podes apagar os teus próprios artigos.\"\n}"
+            },
+            {
+              "name": "DELETE /artigos/:id — Regra de negócio: publicado não se apaga (409)",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:04:03 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "DELETE /artigos/:id — Apagar rascunho (204)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 204 No Content ao apagar rascunho', () => {",
+                  "  pm.response.to.have.status(204);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoRascunhoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoRascunhoId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "DELETE /artigos/:id — Apagar rascunho (204)",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoRascunhoId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoRascunhoId}}"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:04:12 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "5. Autorização entre jornalistas (403)",
+      "item": [
+        {
+          "name": "POST /auth/registo — Criar 2.º jornalista (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 201 Created', () => {",
+                  "  pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Rui Mendes\",\n  \"email\": \"{{emailTeste2}}\",\n  \"password\": \"{{passwordTeste}}\",\n  \"telefone\": \"961234567\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/registo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "registo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /auth/registo — Criar 2.º jornalista (201)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Rui Mendes\",\n  \"email\": \"{{emailTeste2}}\",\n  \"password\": \"{{passwordTeste}}\",\n  \"telefone\": \"961234567\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/registo",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "registo"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "91"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"5b-PlqjtSdVaVQZD569qfSdJUersOY\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:04:29 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 2,\n  \"nome\": \"Rui Mendes\",\n  \"email\": \"outro_1795463715345@escola.pt\",\n  \"telefone\": \"961234567\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/login — Login 2.º jornalista (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK e guarda token2', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo.token).to.be.a('string').and.not.empty;",
+                  "  pm.collectionVariables.set('token2', corpo.token);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{emailTeste2}}\",\n  \"password\": \"{{passwordTeste}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /artigos/:id — Aceder a artigo de outro jornalista (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 403 Forbidden (só pode ver os seus artigos)', () => {",
+                  "  pm.response.to.have.status(403);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token2}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /artigos/:id — Aceder a artigo de outro jornalista (403)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "55"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"37-N0gN47Z1TBv1XXwpRrAvwG3EDFI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:05:13 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Só podes aceder aos teus próprios artigos.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "DELETE /jornalistas/perfil — Apagar 2.º jornalista (204)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 204 No Content', () => {",
+                  "  pm.response.to.have.status(204);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token2}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jornalistas/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jornalistas",
+                "perfil"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "DELETE /jornalistas/perfil — Apagar 2.º jornalista (204)",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/jornalistas/perfil",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "jornalistas",
+                    "perfil"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:05:26 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "6. Fontes e Arquivo.pt",
+      "item": [
+        {
+          "name": "GET /artigos/abc/fontes — artigoId inválido (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 400 Bad Request para artigoId inválido', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/abc/fontes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "abc",
+                "fontes"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /artigos/abc/fontes — artigoId inválido (400)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/abc/fontes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "abc",
+                    "fontes"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "51"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"33-nTY3VthShSclHD7KY3OY4JdLsGI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:27:40 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"O artigoId deve ser um inteiro positivo.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /artigos/:artigoId/fontes — URL inválido (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 400 Bad Request para URL inválido', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"nao-e-um-url\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /artigos/:artigoId/fontes — URL inválido (400)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"nao-e-um-url\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "84"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"54-q41RvDUnqShekexZFpAhZsJAxiA\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:28:00 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Envia apenas um url válido com protocolo http ou https, sem credenciais.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /artigos/:artigoId/fontes — Campos extra não permitidos (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 400 Bad Request quando envia campos extra', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://www.atec.pt\",\n  \"arquivada\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /artigos/:artigoId/fontes — Campos extra não permitidos (400)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://www.atec.pt\",\n  \"arquivada\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "84"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"54-q41RvDUnqShekexZFpAhZsJAxiA\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:28:13 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Envia apenas um url válido com protocolo http ou https, sem credenciais.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /artigos/:artigoId/fontes — URL arquivado no Arquivo.pt (201 + Location)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 201 Created com header Location', () => {",
+                  "  pm.response.to.have.status(201);",
+                  "  pm.response.to.have.header('Location');",
+                  "});",
+                  "pm.test('Fonte marcada como arquivada com link HTTPS do Arquivo.pt e data ISO', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo).to.have.property('id');",
+                  "  pm.expect(corpo.arquivada).to.eql(true);",
+                  "  pm.expect(corpo.linkArquivo).to.be.a('string').and.include('https://arquivo.pt/');",
+                  "  pm.expect(corpo.dataArquivo).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.000Z$/);",
+                  "  pm.expect(pm.response.headers.get('Location')).to.eql(`/api/v1/artigos/${corpo.artigoId}/fontes/${corpo.id}`);",
+                  "  pm.collectionVariables.set('fonteId', corpo.id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://www.atec.pt\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /artigos/:artigoId/fontes — URL arquivado no Arquivo.pt (201 + Location)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://www.atec.pt\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Location",
+                  "value": "/api/v1/artigos/7/fontes/7"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "185"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"b9-jeHQBjPy+iaJJ7/AvLh3tAQBKYI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:28:26 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 7,\n  \"artigoId\": 7,\n  \"url\": \"https://www.atec.pt\",\n  \"arquivada\": true,\n  \"linkArquivo\": \"https://arquivo.pt/wayback/20260624063813/http://www.atec.pt/\",\n  \"dataArquivo\": \"2026-06-24T06:38:13.000Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "POST /artigos/:artigoId/fontes — URL nunca arquivado (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 201 Created', () => {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('Fonte marcada como não arquivada', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo.arquivada).to.eql(false);",
+                  "  pm.expect(corpo.linkArquivo).to.eql(null);",
+                  "  pm.expect(corpo.dataArquivo).to.eql(null);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://dominio-inexistente-fonte-segura-999999.invalid\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /artigos/:artigoId/fontes — URL nunca arquivado (201)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://dominio-inexistente-fonte-segura-999999.invalid\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Location",
+                  "value": "/api/v1/artigos/7/fontes/8"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "141"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"8d-i0QnV0B5Ckck+ag1CMy++iYe7uk\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:29:13 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 8,\n  \"artigoId\": 7,\n  \"url\": \"https://dominio-inexistente-fonte-segura-999999.invalid\",\n  \"arquivada\": false,\n  \"linkArquivo\": null,\n  \"dataArquivo\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "GET /artigos/:artigoId/fontes — Listar fontes do artigo (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Devolve lista com pelo menos 2 fontes', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo).to.be.an('array');",
+                  "  pm.expect(corpo.length).to.be.at.least(2);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /artigos/:artigoId/fontes — Listar fontes do artigo (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "657"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"291-WQuncBf9mXZk1ulR8e6ZCPAiEYY\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:29:20 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 5,\n    \"artigoId\": 7,\n    \"url\": \"https://dominio-inexistente-fonte-segura-999999.invalid\",\n    \"arquivada\": false,\n    \"linkArquivo\": null,\n    \"dataArquivo\": null\n  },\n  {\n    \"id\": 6,\n    \"artigoId\": 7,\n    \"url\": \"https://www.atec.pt\",\n    \"arquivada\": true,\n    \"linkArquivo\": \"https://arquivo.pt/wayback/20260624063813/http://www.atec.pt/\",\n    \"dataArquivo\": \"2026-06-24T06:38:13.000Z\"\n  },\n  {\n    \"id\": 7,\n    \"artigoId\": 7,\n    \"url\": \"https://www.atec.pt\",\n    \"arquivada\": true,\n    \"linkArquivo\": \"https://arquivo.pt/wayback/20260624063813/http://www.atec.pt/\",\n    \"dataArquivo\": \"2026-06-24T06:38:13.000Z\"\n  },\n  {\n    \"id\": 8,\n    \"artigoId\": 7,\n    \"url\": \"https://dominio-inexistente-fonte-segura-999999.invalid\",\n    \"arquivada\": false,\n    \"linkArquivo\": null,\n    \"dataArquivo\": null\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "GET /artigos/:artigoId/fontes/abc — ID de fonte inválido (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 400 Bad Request para ID de fonte inválido', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/abc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes",
+                "abc"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /artigos/:artigoId/fontes/abc — ID de fonte inválido (400)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/abc",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes",
+                    "abc"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "77"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"4d-69vUv/OJhrfXdsaPiQeZyWFnv1E\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:29:37 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"O id «abc» não é válido (usa um número inteiro maior que 0).\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "GET /artigos/:artigoId/fontes/:id — Ver fonte por ID (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Devolve a fonte correta', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo.id).to.eql(Number(pm.collectionVariables.get('fonteId')));",
+                  "  pm.expect(corpo).to.have.property('url');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/{{fonteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes",
+                "{{fonteId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /artigos/:artigoId/fontes/:id — Ver fonte por ID (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/{{fonteId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes",
+                    "{{fonteId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "185"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"b9-jeHQBjPy+iaJJ7/AvLh3tAQBKYI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:29:45 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 7,\n  \"artigoId\": 7,\n  \"url\": \"https://www.atec.pt\",\n  \"arquivada\": true,\n  \"linkArquivo\": \"https://arquivo.pt/wayback/20260624063813/http://www.atec.pt/\",\n  \"dataArquivo\": \"2026-06-24T06:38:13.000Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "GET /artigos/:artigoId/fontes/999999 — Fonte inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 404 Not Found', () => {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes",
+                "999999"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /artigos/:artigoId/fontes/999999 — Fonte inexistente (404)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/999999",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes",
+                    "999999"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "46"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"2e-yIsMEuMqQRxsCG5Bxyp1r409QVo\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:30:01 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Fonte não encontrada neste artigo.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "PUT /artigos/:artigoId/fontes/:id — Atualizar URL da fonte (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('URL atualizado e revalidado no Arquivo.pt', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo.url).to.eql('https://www.publico.pt');",
+                  "  pm.expect(corpo.arquivada).to.eql(true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://www.publico.pt\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/{{fonteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes",
+                "{{fonteId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "PUT /artigos/:artigoId/fontes/:id — Atualizar URL da fonte (200)",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://www.publico.pt\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/{{fonteId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes",
+                    "{{fonteId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "192"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"c0-X8M0lqH5Nub5MCFftMcTvHGVLGc\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:30:39 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 7,\n  \"artigoId\": 7,\n  \"url\": \"https://www.publico.pt\",\n  \"arquivada\": true,\n  \"linkArquivo\": \"https://arquivo.pt/wayback/20260703151907/https://www.publico.pt/\",\n  \"dataArquivo\": \"2026-07-03T15:19:07.000Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "PATCH /artigos/:artigoId/fontes/:id — Alterar URL da fonte (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('URL alterado via PATCH e revalidado no Arquivo.pt', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo.url).to.eql('https://www.rtp.pt');",
+                  "  pm.expect(corpo.arquivada).to.eql(true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://www.rtp.pt\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/{{fonteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes",
+                "{{fonteId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "PATCH /artigos/:artigoId/fontes/:id — Alterar URL da fonte (200)",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://www.rtp.pt\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/{{fonteId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes",
+                    "{{fonteId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "184"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"b8-vYDl5owdqpd1V9DBPQmRTIZjQkY\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:30:56 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 7,\n  \"artigoId\": 7,\n  \"url\": \"https://www.rtp.pt\",\n  \"arquivada\": true,\n  \"linkArquivo\": \"https://arquivo.pt/wayback/20260630180626/https://www.rtp.pt/\",\n  \"dataArquivo\": \"2026-06-30T18:06:26.000Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "DELETE /artigos/:artigoId/fontes/:id — Apagar fonte (204)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 204 No Content', () => {",
+                  "  pm.response.to.have.status(204);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/{{fonteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes",
+                "{{fonteId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "DELETE /artigos/:artigoId/fontes/:id — Apagar fonte (204)",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes/{{fonteId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes",
+                    "{{fonteId}}"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:31:28 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "POST /artigos/999999/fontes — Artigo inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 404 Not Found para artigo inexistente', () => {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://www.atec.pt\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos/999999/fontes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "999999",
+                "fontes"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /artigos/999999/fontes — Artigo inexistente (404)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://www.atec.pt\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/999999/fontes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "999999",
+                    "fontes"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "34"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"22-QN3FhuUSSFDYiju5DtsWTCSt6Wo\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:31:38 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Artigo não encontrado.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "7. Estatísticas (API Key)",
+      "item": [
+        {
+          "name": "GET /estatisticas — Sem API key (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 401 Unauthorized sem API key', () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estatisticas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estatisticas"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /estatisticas — Sem API key (401)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/estatisticas",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "estatisticas"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "41"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"29-1hgph+xTx/ajgbN3ns9DyNBkJ1g\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:31:50 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"API key em falta ou inválida.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "GET /estatisticas — API key inválida (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 401 Unauthorized com API key errada', () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "chave-errada",
+                  "type": "string"
+                },
+                {
+                  "key": "in",
+                  "value": "header",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estatisticas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estatisticas"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /estatisticas — API key inválida (401)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/estatisticas",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "estatisticas"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "41"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"29-1hgph+xTx/ajgbN3ns9DyNBkJ1g\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:32:00 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"API key em falta ou inválida.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "GET /estatisticas — API key válida (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 200 OK', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Devolve estatísticas de artigos e fontes', () => {",
+                  "  const corpo = pm.response.json();",
+                  "  pm.expect(corpo).to.have.property('artigos');",
+                  "  pm.expect(corpo.artigos).to.have.all.keys('total', 'rascunho', 'publicado');",
+                  "  pm.expect(corpo).to.have.property('fontes');",
+                  "  pm.expect(corpo.fontes).to.have.all.keys('total', 'arquivadas', 'naoArquivadas');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key",
+                  "type": "string"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}",
+                  "type": "string"
+                },
+                {
+                  "key": "in",
+                  "value": "header",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estatisticas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estatisticas"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /estatisticas — API key válida (200)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/estatisticas",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "estatisticas"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "104"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"68-GPxBM2j4F2Lw5NPn+CTTIOSe/ck\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:32:09 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"artigos\": {\n    \"total\": 4,\n    \"rascunho\": 0,\n    \"publicado\": 4\n  },\n  \"fontes\": {\n    \"total\": 5,\n    \"arquivadas\": 2,\n    \"naoArquivadas\": 3\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "8. Limpeza (Apagar Perfil)",
+      "item": [
+        {
+          "name": "DELETE /jornalistas/perfil — Apagar próprio perfil (204)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 204 No Content', () => {",
+                  "  pm.response.to.have.status(204);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jornalistas/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jornalistas",
+                "perfil"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "DELETE /jornalistas/perfil — Apagar próprio perfil (204)",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/jornalistas/perfil",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "jornalistas",
+                    "perfil"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:34:25 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "GET /jornalistas/perfil — Após apagar conta (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 404 Not Found após apagar conta', () => {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/jornalistas/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jornalistas",
+                "perfil"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "GET /jornalistas/perfil — Após apagar conta (404)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/jornalistas/perfil",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "jornalistas",
+                    "perfil"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "38"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"26-436YNc8fG+JpH7gL+Bm1c7FIGqE\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:34:37 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Jornalista não encontrado.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "9. Falha Externa — Arquivo.pt (502, correr à parte)",
+      "item": [
+        {
+          "name": "POST /artigos/:artigoId/fontes — Arquivo.pt indisponível (502)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Responde 502 Bad Gateway quando Arquivo.pt falha', () => {",
+                  "  pm.response.to.have.status(502);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://www.atec.pt\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoPublicadoId}}",
+                "fontes"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "POST /artigos/:artigoId/fontes — Arquivo.pt indisponível (502)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://www.atec.pt\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/artigos/{{artigoPublicadoId}}/fontes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "artigos",
+                    "{{artigoPublicadoId}}",
+                    "fontes"
+                  ]
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "81"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"51-zR8WU/ngUgHa8nRUZhZSLN+S744\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Nov 2026 20:25:58 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"erro\": \"Não foi possível consultar o Arquivo.pt dentro do tempo disponível.\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Para testar o 502: altera temporariamente ARQUIVO_URL no .env para https://127.0.0.1:1/falha, reinicia o servidor e corre este pedido (desmarca esta pasta no Runner normal)."
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          "if (pm.response.code !== 204) {",
+          "  pm.test('A resposta é JSON', function () {",
+          "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+          "  });",
+          "}",
+          "if (pm.response.code >= 400) {",
+          "  pm.test('O erro vem no formato { erro: texto }', function () {",
+          "    const corpo = pm.response.json();",
+          "    pm.expect(Object.keys(corpo)).to.eql(['erro']);",
+          "    pm.expect(corpo.erro).to.be.a('string').and.not.empty;",
+          "  });",
+          "}"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:3000/api/v1"
+    },
+    {
+      "key": "apiKey",
+      "value": "dee678816fe63a5c149d9f9043d2c6bf3ab0658393cd1811951ae55b2f1065e6"
+    },
+    {
+      "key": "emailTeste",
+      "value": ""
+    },
+    {
+      "key": "emailTeste2",
+      "value": ""
+    },
+    {
+      "key": "passwordTeste",
+      "value": "Teste@123"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "token2",
+      "value": ""
+    },
+    {
+      "key": "artigoRascunhoId",
+      "value": ""
+    },
+    {
+      "key": "artigoPublicadoId",
+      "value": ""
+    },
+    {
+      "key": "fonteId",
+      "value": ""
+    },
+    {
+      "key": "json_web_token_01xx",
+      "secret": true
+    }
+  ]
+}
